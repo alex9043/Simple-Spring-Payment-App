@@ -10,9 +10,10 @@
     </parent>
     <groupId>ru.alex9043</groupId>
     <artifactId>Simple-Spring-Payment-App</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Simple-Spring-Payment-App</name>
     <description>Simple-Spring-Payment-App</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>21</java.version>
     </properties>
@@ -61,7 +62,11 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <outputDirectory>./build</outputDirectory>
+                    <mainClass>ru.alex9043.simplespringpaymentapp.SimpleSpringPaymentAppApplication</mainClass>
                 </configuration>
+                <executions>
+                </executions>
             </plugin>
         </plugins>
     </build>
