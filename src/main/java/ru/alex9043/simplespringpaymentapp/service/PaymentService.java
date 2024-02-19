@@ -4,14 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.alex9043.simplespringpaymentapp.domain.Payment;
 import ru.alex9043.simplespringpaymentapp.dto.AllPaymentsResponse;
 import ru.alex9043.simplespringpaymentapp.dto.PaymentRequest;
 import ru.alex9043.simplespringpaymentapp.dto.PaymentResponse;
+import ru.alex9043.simplespringpaymentapp.error.PaymentNotFoundException;
 import ru.alex9043.simplespringpaymentapp.repo.PaymentRepository;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class PaymentService {
     private final PaymentRepository repository;
 
     public PaymentResponse getPayment(Long id) {
-        Payment payment = repository.getReferenceById(id);
+        Payment payment = repository.findById(id).orElseThrow(PaymentNotFoundException::new);
         return PaymentResponse.builder()
                 .id(payment.getId())
                 .sum(payment.getSum())
@@ -62,6 +63,7 @@ public class PaymentService {
     }
 
     public void deletePayment(Long id) {
-        repository.deleteById(id);
+        Payment payment = repository.findById(id).orElseThrow(PaymentNotFoundException::new);
+        repository.delete(payment);
     }
 }

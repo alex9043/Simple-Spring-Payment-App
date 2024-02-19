@@ -10,7 +10,7 @@
     </parent>
     <groupId>ru.alex9043</groupId>
     <artifactId>Simple-Spring-Payment-App</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>Simple-Spring-Payment-App</name>
     <description>Simple-Spring-Payment-App</description>
     <packaging>jar</packaging>
