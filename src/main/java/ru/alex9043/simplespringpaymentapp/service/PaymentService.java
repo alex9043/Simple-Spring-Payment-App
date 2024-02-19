@@ -60,4 +60,8 @@ public class PaymentService {
                 .date(payment.getDate())
                 .build();
     }
+
+    public void deletePayment(Long id) {
+        repository.deleteById(id);
+    }
 }

@@ -29,4 +29,10 @@ public class PaymentController {
     public ResponseEntity<PaymentResponse> createPayment(@RequestBody PaymentRequest payload) {
         return new ResponseEntity<>(service.createPayment(payload), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePayment(@PathVariable("id") Long id) {
+        service.deletePayment(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
