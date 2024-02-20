@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import ru.alex9043.simplespringpaymentapp.domain.Payment;
 import ru.alex9043.simplespringpaymentapp.dto.AllPaymentsResponse;
 import ru.alex9043.simplespringpaymentapp.dto.PaymentRequest;
