@@ -1,8 +1,6 @@
 package ru.alex9043.simplespringpaymentapp.domain;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
