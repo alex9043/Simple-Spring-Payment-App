@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.alex9043.simplespringpaymentapp.error.AuthenticationException;
 import ru.alex9043.simplespringpaymentapp.repo.UserRepository;
 
 @Configuration
@@ -21,7 +22,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found")); // TODO throw custom exception
+                .orElseThrow(AuthenticationException::new);
     }
 
     @Bean

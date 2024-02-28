@@ -16,3 +16,6 @@ server:
 springdoc:
   api-docs:
     path: /api/v1/api-docs
+jwt:
+  access:
+    secret: ${JWT_ACCESS_SECRET}

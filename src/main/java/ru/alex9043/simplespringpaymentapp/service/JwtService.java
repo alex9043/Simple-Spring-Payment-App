@@ -5,10 +5,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,21 +20,25 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"; // TODO Generate code
-    private static final Date ISSUED = new Date(System.currentTimeMillis());
-    private static final Date EXPIRATION = new Date(System.currentTimeMillis() + 1000 * 60 * 24);
+    private final String JWT_ACCESS_SECRET;
+
+    public JwtService(@Value("${jwt.access.secret}") String jwtAccessSecret) {
+        this.JWT_ACCESS_SECRET = jwtAccessSecret;
+    }
 
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
     private String generateToken(Map<String,Object> extractClaims, UserDetails userDetails) {
+        final LocalDateTime now = LocalDateTime.now();
+        final Instant accessExpirationInstant = now.plusMinutes(60).atZone(ZoneId.systemDefault()).toInstant();
+        final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts
                 .builder()
                 .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(ISSUED)
-                .setExpiration(EXPIRATION)
+                .setExpiration(accessExpiration)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -67,9 +75,7 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_ACCESS_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-
 }

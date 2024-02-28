@@ -72,41 +72,4 @@ public class PaymentController {
         service.deletePayment(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @ExceptionHandler(value = {PaymentNotFoundException.class})
-    private ResponseEntity<ErrorResponse> handleGetException() {
-        ErrorResponse response = new ErrorResponse(
-                new Date(System.currentTimeMillis()),
-                HttpStatus.NOT_FOUND.value(),
-                "payment with this id was not found!"
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = {HttpMessageNotReadableException.class})
-    private ResponseEntity<ErrorResponse> handleMessageNotReadableException() {
-        ErrorResponse response = new ErrorResponse(
-                new Date(System.currentTimeMillis()),
-                HttpStatus.BAD_REQUEST.value(),
-                "Sum must be a maximum of 9 digits"
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<MultiErrorResponse> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        MultiErrorResponse response = new MultiErrorResponse(
-                new Date(System.currentTimeMillis()),
-                HttpStatus.BAD_REQUEST.value(),
-                errors
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
 }

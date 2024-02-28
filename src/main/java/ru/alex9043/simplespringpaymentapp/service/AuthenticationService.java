@@ -9,6 +9,7 @@ import ru.alex9043.simplespringpaymentapp.dao.user.AuthenticationRequest;
 import ru.alex9043.simplespringpaymentapp.dao.user.AuthenticationResponse;
 import ru.alex9043.simplespringpaymentapp.dao.user.UserResponse;
 import ru.alex9043.simplespringpaymentapp.domain.User;
+import ru.alex9043.simplespringpaymentapp.error.AuthenticationException;
 import ru.alex9043.simplespringpaymentapp.repo.UserRepository;
 
 @Service
@@ -40,7 +41,7 @@ public class AuthenticationService {
                 request.getPassword()
         ));
         var user = repository.findByUsername(request.getUsername())
-                .orElseThrow(); // TODO throw custom exception
+                .orElseThrow(AuthenticationException::new);
         var token = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .user(UserResponse.builder()
