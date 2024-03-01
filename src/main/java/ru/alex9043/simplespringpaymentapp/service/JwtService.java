@@ -30,7 +30,7 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    private String generateToken(Map<String,Object> extractClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(60).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
@@ -72,6 +72,8 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+
     }
 
     private Key getSignKey() {
