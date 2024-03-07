@@ -27,4 +27,6 @@ public class PaymentRequest {
     private String description;
     @Schema(description = "Дата платежа")
     private Date date;
+    @Schema(description = "Необработанное изборажение в формате base64")
+    private String receipt;
 }

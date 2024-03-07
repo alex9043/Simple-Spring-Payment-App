@@ -14,9 +14,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.alex9043.simplespringpaymentapp.dto.*;
+import ru.alex9043.simplespringpaymentapp.error.ImageTypeInvalidException;
 import ru.alex9043.simplespringpaymentapp.error.PaymentNotFoundException;
 import ru.alex9043.simplespringpaymentapp.service.PaymentService;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +59,7 @@ public class PaymentController {
     public ResponseEntity<PaymentResponse> createPayment(
             @Parameter(description = "Тело платежа (сумма, описание, дата")
             @Valid
-            @RequestBody PaymentRequest payload) {
+            @RequestBody PaymentRequest payload) throws IOException {
         return new ResponseEntity<>(service.createPayment(payload), HttpStatus.CREATED);
     }
 
@@ -102,6 +106,16 @@ public class PaymentController {
                 new Date(System.currentTimeMillis()),
                 HttpStatus.BAD_REQUEST.value(),
                 errors
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {ImageTypeInvalidException.class, IOException.class})
+    public ResponseEntity<ErrorResponse> handleInvalidImageType() {
+        ErrorResponse response = new ErrorResponse(
+                new Date(System.currentTimeMillis()),
+                HttpStatus.BAD_REQUEST.value(),
+                "Receipt supports only png/jpg/jpeg formats"
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }

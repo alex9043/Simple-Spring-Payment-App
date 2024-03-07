@@ -22,4 +22,6 @@ public class PaymentResponse {
     private String description;
     @Schema(description = "Дата платежа")
     private Date date;
+    @Schema(description = "Изображение")
+    private String receipt;
 }

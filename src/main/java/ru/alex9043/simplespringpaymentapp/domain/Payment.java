@@ -22,6 +22,7 @@ public class Payment {
     private Integer sum;
     private String description;
     private Date date;
+    private String receipt;
 
     @Override
     public boolean equals(Object o) {
